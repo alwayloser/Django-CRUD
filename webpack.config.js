@@ -4,6 +4,9 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+// const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = {
 	mode: "development",
 	entry: ["./frontend/app.js", "./frontend/app.scss"],
@@ -56,11 +59,13 @@ module.exports = {
 		alias: {
 			vue$: "vue/dist/vue.esm.js",
 		},
-		extensions: ["*", ".js", ".vue", ".json"],
+		extensions: ["*", ".js"],
 	},
 
 	plugins: [
-		// make sure to include the plugin!
+		new CleanWebpackPlugin({
+			cleanOnceBeforeBuildPatterns: ["./static/dist/*"],
+		}), // make sure to include the plugin!
 		new VueLoaderPlugin(),
 		new MiniCssExtractPlugin({
 			// Options similar to the same options in webpackOptions.output
@@ -68,5 +73,6 @@ module.exports = {
 			filename: "app.css",
 			chunkFilename: "[id].css",
 		}),
+		// new HtmlWebpackPlugin(),
 	],
 };
